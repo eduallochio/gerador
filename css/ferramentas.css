@@ -19,6 +19,12 @@
     text-align: center;
 }
 
+/* Header com ícone e badge opcional */
+.tool-widget h2 i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
 .form-group {
     margin-bottom: 1.5rem;
     text-align: left;
@@ -69,6 +75,19 @@
     box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
 }
 
+/* Botões secundários e estados desabilitados */
+.tool-button.secondary {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.tool-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 .result-box {
     margin-top: 1.5rem;
     padding: 1rem;
@@ -91,6 +110,16 @@
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
+}
+
+/* Cartões de opção com leve destaque ao foco */
+.qr-options-grid .form-group {
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+.qr-options-grid .form-group:focus-within {
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15);
 }
 
 .form-group input[type="color"] {
@@ -120,6 +149,13 @@
 .download-btn:hover {
     background: #3ac0e0; /* Um pouco mais escuro que --success-color */
     box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+}
+
+/* Layout de duas colunas para ferramentas longas (quando aplicável) */
+.tools-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
 }
 
 /* Ajuste no Canvas do QR Code */
@@ -186,6 +222,10 @@
         gap: 1.2rem; /* Ajusta o espaçamento para a visualização vertical */
     }
 
+    .tools-two-col {
+        grid-template-columns: 1fr;
+    }
+
     .form-group {
         /* Garante que o texto dos labels não fique quebrado de forma estranha */
         text-align: left; 
@@ -218,4 +258,9 @@
 .promo-button {
     max-width: 400px;
     margin: 0 auto;
+}
+
+/* Espaçamento extra entre widgets para respirabilidade */
+.tools-section .tool-widget + .tool-widget {
+    margin-top: 2rem;
 }

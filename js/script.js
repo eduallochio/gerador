@@ -30,6 +30,11 @@ function showToast(message, isError = false) {
 // Função para inicializar o Supabase com validação robusta
 async function initializeSupabase() {
     try {
+        // Verifica se o Supabase foi carregado
+        if (typeof window.supabase === 'undefined') {
+            throw new Error('Biblioteca Supabase não carregada');
+        }
+
         const supabaseConfig = {
             url: 'https://ozijuhsgcujnqhhpfise.supabase.co', // URL do seu projeto Supabase
             key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96aWp1aHNnY3VqbnFoaHBmaXNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NTMwNjgsImV4cCI6MjA2OTAyOTA2OH0.b9IKmeWAZnuHbVhEqL5BEw2d1n2EYxC9nnhzYwmWm9I' // Chave 'anon' do seu projeto
@@ -47,7 +52,7 @@ async function initializeSupabase() {
             ? supabaseConfig.url.slice(0, -1) 
             : supabaseConfig.url;
 
-        supabaseClient = supabase.createClient(cleanUrl, supabaseConfig.key, {
+        supabaseClient = window.supabase.createClient(cleanUrl, supabaseConfig.key, {
             db: { schema: 'public' },
             auth: { persistSession: false, autoRefreshToken: false }
         });
@@ -67,7 +72,7 @@ async function initializeSupabase() {
     } catch (error) {
         console.error('Erro ao inicializar Supabase:', error);
         supabaseInitialized = false;
-        showToast('Offline: os contadores podem não estar atualizados', true); // MENSAGEM MELHORADA
+        // Não mostra toast de erro aqui - apenas log silencioso
         return false;
     }
 }
@@ -426,28 +431,36 @@ function setupModals() {
             }
         };
 
-        // Adiciona os eventos de clique para abrir os modais
-        openPrivacyBtn.addEventListener('click', (event) => {
-            event.preventDefault(); // Impede que a página suba para o topo!
-            openModal(privacyModal);
-        });
+        // Se os botões não existirem (ex.: movidos para páginas dedicadas), apenas não faz nada
+        if (openPrivacyBtn && privacyModal) {
+            openPrivacyBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                openModal(privacyModal);
+            });
+        }
 
-        openTermsBtn.addEventListener('click', (event) => {
-            event.preventDefault(); // Impede que a página suba para o topo!
-            openModal(termsModal);
-        });
+        if (openTermsBtn && termsModal) {
+            openTermsBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                openModal(termsModal);
+            });
+        }
 
         // Adiciona o evento de clique para todos os botões de fechar
-        closeButtons.forEach(button => {
-            button.addEventListener('click', closeModal);
-        });
+        if (closeButtons && (privacyModal || termsModal)) {
+            closeButtons.forEach(button => {
+                button.addEventListener('click', closeModal);
+            });
+        }
 
         // Fecha o modal se o utilizador clicar fora da caixa de conteúdo
-        window.addEventListener('click', (event) => {
-            if (event.target === privacyModal || event.target === termsModal) {
-                closeModal();
-            }
-        });
+        if (privacyModal || termsModal) {
+            window.addEventListener('click', (event) => {
+                if (event.target === privacyModal || event.target === termsModal) {
+                    closeModal();
+                }
+            });
+        }
 
     } catch (error) {
         console.error('Erro ao configurar os modais:', error);
@@ -484,6 +497,17 @@ async function initializeApp() {
             ambiguous: 'Il1O0'
         };
 
+        // Verifica se todos os elementos essenciais existem
+        const essentialElements = [
+            'passwordDisplay', 'lengthSlider', 'lengthValue', 'generateButton', 
+            'copyButton', 'strengthBar', 'strengthText'
+        ];
+        
+        for (const elementName of essentialElements) {
+            if (!elements[elementName]) {
+                throw new Error(`Elemento essencial não encontrado: ${elementName}`);
+            }
+        }
 
         setupEventListeners(elements, charSets);
         setupFAQ();
@@ -503,12 +527,26 @@ async function initializeApp() {
 }
 
 // --- Ponto de Entrada ---
-document.addEventListener('DOMContentLoaded', async () => {
+// Garante que todos os recursos estejam carregados antes de inicializar
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    // DOM já está pronto
+    initApp();
+}
+
+async function initApp() {
     try {
+        // Aguarda um pouco para garantir que scripts externos estejam prontos
+        if (typeof window.supabase === 'undefined') {
+            console.warn('Supabase ainda não carregado, tentando novamente...');
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
         await initializeSupabase();
         await initializeApp();
     } catch (error) {
         console.error('Erro crítico na inicialização:', error);
         showToast('Ocorreu um erro ao carregar. Recarregue a página.', true);
     }
-});
+}

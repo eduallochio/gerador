@@ -1,75 +1,97 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const isValidUrl = (url) => {
+        try { new URL(url); return true; } catch { return false; }
+    };
+
     // Atualiza o ano no rodapé
     const yearSpan = document.getElementById('current-year');
     if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear();
     }
 
-    // --- Encurtador de URL (código anterior mantido) ---
+    // --- Encurtador de URL ---
     const shortenUrlBtn = document.getElementById('shortenUrlBtn');
     const longUrlInput = document.getElementById('longUrl');
     const customAliasInput = document.getElementById('customAlias');
     const shortUrlResult = document.getElementById('shortUrlResult');
 
-    shortenUrlBtn.addEventListener('click', async () => {
-        const longUrl = longUrlInput.value;
-        const customAlias = customAliasInput.value;
-        if (!longUrl || !isValidUrl(longUrl)) {
-            alert('Por favor, insira uma URL válida.');
-            return;
-        }
-        try {
-            let apiUrl = `https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`;
-            if (customAlias) {
-                apiUrl += `&shorturl=${encodeURIComponent(customAlias)}`;
+    if (shortenUrlBtn && longUrlInput && customAliasInput && shortUrlResult) {
+        shortenUrlBtn.addEventListener('click', async () => {
+            const longUrl = longUrlInput.value;
+            const customAlias = customAliasInput.value;
+            if (!longUrl || !isValidUrl(longUrl)) {
+                alert('Por favor, insira uma URL válida.');
+                return;
             }
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            if (data.shorturl) {
-                const shortUrl = data.shorturl;
-                const shortCode = shortUrl.split('/').pop();
-                const displayText = `gg/${shortCode}`;
-                shortUrlResult.innerHTML = `<strong>URL Personalizada:</strong> <a href="${shortUrl}" target="_blank">${displayText}</a>`;
+            try {
+                let apiUrl = `https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`;
+                if (customAlias) {
+                    apiUrl += `&shorturl=${encodeURIComponent(customAlias)}`;
+                }
+                let response = await fetch(apiUrl);
+                let data = await response.json();
+                if (data.shorturl) {
+                    const shortUrl = data.shorturl;
+                    const shortCode = shortUrl.split('/').pop();
+                    const displayText = `gg/${shortCode}`;
+                    shortUrlResult.innerHTML = `<strong>URL Personalizada:</strong> <a href="${shortUrl}" target="_blank" rel="noopener noreferrer">${displayText}</a>`;
+                    shortUrlResult.style.display = 'block';
+                } else if (data.errorcode) {
+                    // Tenta fallback no TinyURL
+                    const tinyRes = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+                    const tinyText = await tinyRes.text();
+                    if (tinyRes.ok && tinyText.startsWith('http')) {
+                        shortUrlResult.innerHTML = `<strong>URL Curta:</strong> <a href="${tinyText}" target="_blank" rel="noopener noreferrer">${tinyText}</a>`;
+                        shortUrlResult.style.display = 'block';
+                    } else {
+                        throw new Error(data.errormessage || 'Não foi possível encurtar a URL.');
+                    }
+                } else {
+                    // Tenta fallback no TinyURL
+                    const tinyRes = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+                    const tinyText = await tinyRes.text();
+                    if (tinyRes.ok && tinyText.startsWith('http')) {
+                        shortUrlResult.innerHTML = `<strong>URL Curta:</strong> <a href="${tinyText}" target="_blank" rel="noopener noreferrer">${tinyText}</a>`;
+                        shortUrlResult.style.display = 'block';
+                    } else {
+                        throw new Error('Ocorreu um erro desconhecido.');
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao encurtar URL:', error);
+                let userErrorMessage = 'Erro ao encurtar a URL. Tente novamente.';
+                if (error.message && error.message.includes('already exists')) {
+                    userErrorMessage = 'Erro: Este alias personalizado já está em uso. Por favor, escolha outro.';
+                } else if (error.message) {
+                    userErrorMessage = `Erro: ${error.message}`;
+                }
+                shortUrlResult.textContent = userErrorMessage;
                 shortUrlResult.style.display = 'block';
-            } else if (data.errorcode) {
-                throw new Error(data.errormessage || 'Não foi possível encurtar a URL.');
-            } else {
-                throw new Error('Ocorreu um erro desconhecido.');
             }
-        } catch (error) {
-            console.error('Erro ao encurtar URL:', error);
-            let userErrorMessage = 'Erro ao encurtar a URL. Tente novamente.';
-            if (error.message.includes('already exists')) {
-                userErrorMessage = 'Erro: Este alias personalizado já está em uso. Por favor, escolha outro.';
-            } else if (error.message) {
-                userErrorMessage = `Erro: ${error.message}`;
-            }
-            shortUrlResult.textContent = userErrorMessage;
-            shortUrlResult.style.display = 'block';
-        }
         });
-    
-    });
+    }
 
-    // --- Gerador de Link para WhatsApp (código anterior mantido) ---
+    // --- Gerador de Link para WhatsApp ---
     const generateWaLinkBtn = document.getElementById('generateWaLinkBtn');
     const whatsappNumberInput = document.getElementById('whatsappNumber');
     const whatsappMessageInput = document.getElementById('whatsappMessage');
     const waLinkResult = document.getElementById('waLinkResult');
 
-    generateWaLinkBtn.addEventListener('click', () => {
-        const number = whatsappNumberInput.value.replace(/\D/g, '');
-        const message = encodeURIComponent(whatsappMessageInput.value);
-        if (!number) {
-            alert('Por favor, insira um número de WhatsApp.');
-            return;
-        }
-        const waLink = `https://wa.me/${number}?text=${message}`;
-        waLinkResult.innerHTML = `<strong>Link Gerado:</strong> <a href="${waLink}" target="_blank">${waLink}</a>`;
-        waLinkResult.style.display = 'block';
-    });
+    if (generateWaLinkBtn && whatsappNumberInput && whatsappMessageInput && waLinkResult) {
+        generateWaLinkBtn.addEventListener('click', () => {
+            const number = whatsappNumberInput.value.replace(/\D/g, '');
+            const message = encodeURIComponent(whatsappMessageInput.value);
+            if (!number) {
+                alert('Por favor, insira um número de WhatsApp.');
+                return;
+            }
+            const waLink = `https://wa.me/${number}?text=${message}`;
+            waLinkResult.innerHTML = `<strong>Link Gerado:</strong> <a href="${waLink}" target="_blank" rel="noopener noreferrer">${waLink}</a>`;
+            waLinkResult.style.display = 'block';
+        });
+    }
 
-    // --- Gerador de QR Code (LÓGICA NOVA E ATUALIZADA) ---
+    // --- Gerador de QR Code ---
     const generateQrBtn = document.getElementById('generateQrBtn');
     const downloadQrBtn = document.getElementById('downloadQrBtn');
     const qrTextInput = document.getElementById('qrText');
@@ -83,13 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const qrDownloadSection = document.getElementById('qrDownloadSection');
 
     let qrCodeInstance = null;
-    let logoUrl = null; // Variável para armazenar a URL do logo
+    let logoUrl = null;
 
-    // Função para gerar ou atualizar o QR Code
     const renderQRCode = () => {
+        if (!qrTextInput || !qrcodeContainer || !qrDownloadSection) return;
         const text = qrTextInput.value;
         if (!text) {
-            // Limpa tudo se não houver texto
             if (qrCodeInstance) {
                 qrcodeContainer.innerHTML = '';
                 qrcodeContainer.style.display = 'none';
@@ -104,71 +125,62 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 256,
             data: text,
             margin: 10,
-            dotsOptions: {
-                color: qrColorInput.value,
-                type: qrDotStyleInput.value
-            },
-            backgroundOptions: {
-                color: qrBgColorInput.value,
-            },
-            image: logoUrl, // Adiciona o logo aqui
-            imageOptions: {
-                crossOrigin: "anonymous",
-                margin: 5,
-                imageSize: 0.3 // O logo ocupará 30% do espaço
-            }
+            dotsOptions: { color: qrColorInput.value, type: qrDotStyleInput.value },
+            backgroundOptions: { color: qrBgColorInput.value },
+            image: logoUrl,
+            imageOptions: { crossOrigin: 'anonymous', margin: 5, imageSize: 0.3 }
         };
 
         if (qrCodeInstance) {
             qrCodeInstance.update(options);
-        } else {
+        } else if (typeof QRCodeStyling !== 'undefined') {
             qrCodeInstance = new QRCodeStyling(options);
             qrcodeContainer.innerHTML = '';
             qrCodeInstance.append(qrcodeContainer);
         }
-        
+
         qrcodeContainer.style.display = 'flex';
         qrDownloadSection.style.display = 'block';
     };
 
-    generateQrBtn.addEventListener('click', () => {
-        if (!qrTextInput.value) {
-            alert('Por favor, digite um texto ou URL para gerar o QR Code.');
-            return;
-        }
-        renderQRCode();
-    });
-    
-    // Listeners para atualização em tempo real
-    qrColorInput.addEventListener('input', renderQRCode);
-    qrBgColorInput.addEventListener('input', renderQRCode);
-    qrDotStyleInput.addEventListener('change', renderQRCode);
-
-    // Listener para o upload do logo
-    qrLogoInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            logoUrl = URL.createObjectURL(file);
-            removeLogoBtn.style.display = 'flex';
+    if (generateQrBtn) {
+        generateQrBtn.addEventListener('click', () => {
+            if (!qrTextInput.value) {
+                alert('Por favor, digite um texto ou URL para gerar o QR Code.');
+                return;
+            }
             renderQRCode();
-        }
-    });
+        });
+    }
 
-    // Listener para remover o logo
-    removeLogoBtn.addEventListener('click', () => {
-        logoUrl = null;
-        qrLogoInput.value = ''; // Limpa o input de arquivo
-        removeLogoBtn.style.display = 'none';
-        renderQRCode();
-    });
+    if (qrColorInput) qrColorInput.addEventListener('input', renderQRCode);
+    if (qrBgColorInput) qrBgColorInput.addEventListener('input', renderQRCode);
+    if (qrDotStyleInput) qrDotStyleInput.addEventListener('change', renderQRCode);
 
-    // Função de Download
-    downloadQrBtn.addEventListener('click', () => {
-        if (qrCodeInstance) {
-            const fileName = qrFileNameInput.value || 'qrcode';
-            qrCodeInstance.download({
-                name: fileName,
-                extension: "png"
-            });
-        }
-    });
+    if (qrLogoInput && removeLogoBtn) {
+        qrLogoInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                logoUrl = URL.createObjectURL(file);
+                removeLogoBtn.style.display = 'flex';
+                renderQRCode();
+            }
+        });
+
+        removeLogoBtn.addEventListener('click', () => {
+            logoUrl = null;
+            qrLogoInput.value = '';
+            removeLogoBtn.style.display = 'none';
+            renderQRCode();
+        });
+    }
+
+    if (downloadQrBtn) {
+        downloadQrBtn.addEventListener('click', () => {
+            if (qrCodeInstance) {
+                const fileName = (qrFileNameInput && qrFileNameInput.value) || 'qrcode';
+                qrCodeInstance.download({ name: fileName, extension: 'png' });
+            }
+        });
+    }
+});

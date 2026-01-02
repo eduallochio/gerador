@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-4896814460874070">
+    <meta name="theme-color" content="#4361ee">
+    <meta name="msapplication-TileColor" content="#4361ee">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4896814460874070"
         crossorigin="anonymous"></script>
     <script type="application/ld+json">
@@ -36,6 +39,8 @@
     <link rel="icon" href="img/guardiao-icon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap"
         rel="stylesheet">
@@ -50,7 +55,7 @@
 
     <header class="header">
         <div class="container">
-            <a href="#" class="logo">
+            <a href="index.html" class="logo">
                 <i class="fa-solid fa-shield-halved"></i>
                 <h1>Gerador Guardião</h1>
             </a>
@@ -98,10 +103,10 @@
 
                     <div class="password-display-container">
                         <input type="text" id="passwordDisplay" readonly>
-                        <button id="copyButton" class="copy-btn" title="Copiar Senha">
-                            <i class="fa-solid fa-copy"></i>
-                            <span class="tooltip">Copiar</span>
-                        </button>
+                    <button id="copyButton" class="copy-btn" title="Copiar Senha" aria-label="Copiar senha gerada para área de transferência">
+                        <i class="fa-solid fa-copy"></i>
+                        <span class="tooltip">Copiar</span>
+                    </button>
                     </div>
 
                     <div class="strength-indicator-container">
@@ -118,7 +123,7 @@
                                     <button class="length-btn" data-change="+2"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
-                            <input type="range" id="lengthSlider" min="8" max="32" value="16">
+                            <input type="range" id="lengthSlider" min="8" max="32" value="16" aria-label="Comprimento da senha">
                         </div>
                         <div class="option-grid">
                             <div class="option">
@@ -159,7 +164,7 @@
                         </div>
                     </div>
 
-                    <button class="generate-button" id="generateButton">
+                    <button class="generate-button" id="generateButton" aria-label="Gerar nova senha com as configurações selecionadas">
                         <i class="fa-solid fa-arrows-rotate"></i>
                         <span>Gerar Nova Senha</span>
                     </button>
@@ -175,13 +180,13 @@
 
                 <div class="social-share">
                     <span>Compartilhe: </span>
-                    <a href="#" class="social-icon" id="shareTwitter" target="_blank" rel="noopener noreferrer">
+                    <a href="javascript:void(0)" class="social-icon" id="shareTwitter" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no X (Twitter)">
                         <i class="fab fa-x-twitter"></i>
                     </a>
-                    <a href="#" class="social-icon" id="shareFacebook" target="_blank" rel="noopener noreferrer">
+                    <a href="javascript:void(0)" class="social-icon" id="shareFacebook" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook">
                         <i class="fab fa-facebook"></i>
                     </a>
-                    <a href="#" class="social-icon" id="shareWhatsapp" target="_blank" rel="noopener noreferrer">
+                    <a href="javascript:void(0)" class="social-icon" id="shareWhatsapp" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no WhatsApp">
                         <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>
@@ -239,7 +244,7 @@
                 <div class="articles-grid">
                     <div class="featured-article-card">
                         <a href="artigos/senhas-seguras-escudo-digital.html" class="featured-article-link">
-                            <img src="img/imagem-senha.png" alt="Imagem de destaque do artigo principal">
+                            <img src="img/imagem-senha.png" alt="Ilustração de segurança digital com escudo e chave representando proteção de senhas">
                             <div class="card-content">
                                 <span class="card-category">Nosso Blog</span>
                                 <h3>Por que uma Senha Forte é seu Melhor Escudo Digital?</h3>
@@ -374,8 +379,8 @@
                     </div>
                     <div class="links-column">
                         <h3>Legal</h3>
-                        <a href="#" id="openPrivacyModal" class="footer-link-button">Política de Privacidade</a>
-                        <a href="#" id="openTermsModal" class="footer-link-button">Termos de Uso</a>
+                        <a href="javascript:void(0)" id="openPrivacyModal" class="footer-link-button">Política de Privacidade</a>
+                        <a href="javascript:void(0)" id="openTermsModal" class="footer-link-button">Termos de Uso</a>
                     </div>
                 </div>
             </div>
@@ -455,17 +460,23 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Carrega Supabase primeiro (sem async/defer para garantir que esteja disponível) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="console.error('Falha ao carregar Supabase')"></script>
+    
+    <!-- Scripts da aplicação em ordem correta -->
+    <script src="js/theme-switcher.js"></script>
+    <script src="js/script.js"></script>
+    
     <script>
         // Script para atualizar as datas nos modais
-        document.querySelectorAll('.dynamic-date').forEach(element => {
-            const today = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            element.innerHTML += today.toLocaleDateString('pt-BR', options);
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.dynamic-date').forEach(element => {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                element.innerHTML += today.toLocaleDateString('pt-BR', options);
+            });
         });
     </script>
-    <script src="js/script.js" async defer></script>
-    <script src="js/theme-switcher.js" async defer></script>
 </body>
 
 </html>
