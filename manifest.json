@@ -1,0 +1,22 @@
+{
+  "name": "Gerador Guardião - Gerador de Senhas Seguras",
+  "short_name": "Gerador Guardião",
+  "description": "Gere senhas fortes e seguras gratuitamente. 100% seguro e privado.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4361ee",
+  "theme_color": "#4361ee",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "img/guardiao-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["security", "utilities", "productivity"],
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}
