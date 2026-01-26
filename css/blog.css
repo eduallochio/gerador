@@ -2,9 +2,6 @@
 /* ===         ESTILOS DO BLOG               === */
 /* ============================================= */
 
-/* Importa as mesmas fontes para garantir consistência */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@500&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap");
-
 /*
   Documentação:
   - Usamos a variável --widget-background para o fundo da página do artigo, criando uma diferenciação sutil do resto do site.

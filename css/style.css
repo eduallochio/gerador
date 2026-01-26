@@ -1,6 +1,3 @@
-/* Importação da Fonte do Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap");
-
 /* Variáveis de Cores e Estilos Globais */
 :root {
   --primary-color: #4361ee;
@@ -200,39 +197,6 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(20px);
-}
-
-/* Ad Containers */
-.ad-container {
-  margin: 2rem 0;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.03);
-  border-radius: var(--border-radius);
-  text-align: center;
-  min-height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--border-color);
-}
-
-.ad-leaderboard {
-  width: 728px;
-  height: 90px;
-  margin: 2rem auto;
-}
-
-.ad-responsive {
-  width: 100%;
-  height: auto;
-  min-height: 250px;
-}
-
-@media (max-width: 800px) {
-  .ad-leaderboard {
-    width: 320px;
-    height: 100px;
-  }
 }
 
 /* Counters */
@@ -1051,93 +1015,8 @@ input:checked + .slider:before {
   .social-share {
     flex-wrap: wrap;
   }
-
-  .counters-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .counter {
-    width: 100%;
-    justify-content: center;
-  }
-}
-/* Estilos para Páginas de Conteúdo e Artigos */
-.article-content {
-  max-width: 750px; /* Limita a largura para melhor legibilidade */
-  margin: 0 auto;
-  text-align: left;
-  color: var(--text-color);
 }
 
-.article-content h1,
-.article-content h2,
-.article-content h3 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  line-height: 1.3;
-  font-weight: 700;
-}
-
-.article-content h1 {
-  font-size: 2.5rem;
-}
-
-.article-content h2 {
-  font-size: 1.8rem;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 0.5rem;
-}
-
-.article-content p,
-.article-content ul,
-.article-content ol {
-  margin-bottom: 1.2rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--light-text-color);
-}
-
-.article-content ul,
-.article-content ol {
-  padding-left: 2rem;
-}
-
-.article-content li {
-  margin-bottom: 0.8rem;
-}
-
-.article-content a {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.article-content a:hover {
-  text-decoration: underline;
-}
-
-.article-content blockquote {
-  margin: 2rem 0;
-  padding: 1rem 1.5rem;
-  border-left: 4px solid var(--primary-color);
-  background-color: var(--widget-background);
-  font-style: italic;
-  font-size: 1.1rem;
-}
-
-.article-content .article-meta {
-  font-size: 0.9rem;
-  color: var(--light-text-color);
-  margin-bottom: 2rem;
-}
-
-.article-content .article-image {
-  width: 100%;
-  height: auto;
-  border-radius: var(--border-radius);
-  margin: 2rem 0;
-}
 /* =================================== */
 /* === Estilos da Seção de Artigos === */
 /* =================================== */
