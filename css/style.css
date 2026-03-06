@@ -19,7 +19,8 @@
   --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
 }
 
-body.dark-mode {
+body.dark-mode,
+html.dark-mode body {
   --primary-color: #4cc9f0;
   --primary-hover: #3aafd6;
   --background-color: #121212;
@@ -916,6 +917,45 @@ input:checked + .slider:before {
   bottom: 50px;
 }
 
+/* Hamburger Menu */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.hamburger-btn:hover {
+  background-color: rgba(67, 97, 238, 0.08);
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-color);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-btn.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   body {
@@ -923,18 +963,47 @@ input:checked + .slider:before {
   }
 
   .header .container {
-    flex-direction: column;
-    gap: 15px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .hamburger-btn {
+    display: flex;
   }
 
   .nav-controls {
-    margin-top: 10px;
+    display: none;
+    width: 100%;
     flex-direction: column;
-    gap: 15px;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0.5rem 0 1rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 0.5rem;
+  }
+
+  .nav-controls.open {
+    display: flex;
   }
 
   .nav {
-    gap: 15px;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  .nav-link {
+    padding: 0.75rem 0.25rem;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .dark-mode-switch {
+    padding-top: 1rem;
   }
 
   .generator-widget {
@@ -1178,19 +1247,20 @@ input:checked + .slider:before {
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
-  display: none; /* Começa escondido */
+  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
   backdrop-filter: blur(5px);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   overflow-y: auto;
 }
 
 .modal-overlay.show {
-  display: flex;
   opacity: 1;
+  visibility: visible;
 }
 
 .modal-content {
@@ -1202,7 +1272,7 @@ input:checked + .slider:before {
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: var(--box-shadow);
-  transform: scale(0.95);
+  transform: scale(0.92);
   transition: transform 0.3s ease;
 }
 

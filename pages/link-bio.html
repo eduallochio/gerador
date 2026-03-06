@@ -4,17 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
 
     <meta name="google-adsense-account" content="ca-pub-4896814460874070">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4896814460874070"
         crossorigin="anonymous"></script>
 
     <title>Gerador de Link na Bio - Gerador Guardião</title>
-    <meta name="google-adsense-account" content="ca-pub-4896814460874070">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4896814460874070"
-        crossorigin="anonymous"></script>
     <meta name="description"
         content="Crie sua própria página de links para usar na bio de redes sociais. Gratuito e personalizável.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://geradorguardiao.com.br/pages/link-bio.html">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Gerador de Link na Bio - Gerador Guardião">
+    <meta property="og:description" content="Crie sua própria página de links para usar na bio de redes sociais. Gratuito, personalizável e sem cadastro.">
+    <meta property="og:image" content="https://geradorguardiao.com.br/img/imagem-senha.webp">
+    <meta property="og:url" content="https://geradorguardiao.com.br/pages/link-bio.html">
+    <meta property="og:site_name" content="Gerador Guardião">
+    <meta property="og:locale" content="pt_BR">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gerador de Link na Bio - Gerador Guardião">
+    <meta name="twitter:description" content="Crie sua própria página de links para usar na bio de redes sociais. Gratuito e personalizável.">
+    <meta name="twitter:image" content="https://geradorguardiao.com.br/img/imagem-senha.webp">
     <link rel="icon" href="../img/guardiao-icon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +44,10 @@
                 <i class="fa-solid fa-shield-halved"></i>
                 <h1>Gerador Guardião</h1>
             </a>
-            <div class="nav-controls">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="navControls">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-controls" id="navControls">
                 <nav class="nav">
                     <a href="ferramentas.html" class="nav-link">Ferramentas</a>
                     <a href="../index.html#artigos" class="nav-link">Aprenda</a>
@@ -155,6 +171,23 @@
     <script src="../js/theme-switcher.js"></script>
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
+        (function() {
+            const btn = document.getElementById('hamburgerBtn');
+            const nav = document.getElementById('navControls');
+            if (!btn || !nav) return;
+            btn.addEventListener('click', () => {
+                const isOpen = nav.classList.toggle('open');
+                btn.classList.toggle('open', isOpen);
+                btn.setAttribute('aria-expanded', isOpen);
+            });
+            nav.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('open');
+                    btn.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                });
+            });
+        })();
     </script>
 </body>
 

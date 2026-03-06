@@ -9,6 +9,31 @@ document.addEventListener('DOMContentLoaded', () => {
         yearSpan.textContent = new Date().getFullYear();
     }
 
+    // Exibe toast de feedback (usa o div #toastNotification da página)
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('toastNotification');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.className = 'toast' + (isError ? ' error' : '');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // Renderiza resultado de URL de forma segura (sem innerHTML com dados externos)
+    function renderUrlResult(container, label, url, displayText) {
+        container.textContent = '';
+        const strong = document.createElement('strong');
+        strong.textContent = label + ' ';
+        const link = document.createElement('a');
+        link.href = url;
+        link.textContent = displayText;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        container.appendChild(strong);
+        container.appendChild(link);
+        container.style.display = 'block';
+    }
+
     // --- Encurtador de URL ---
     const shortenUrlBtn = document.getElementById('shortenUrlBtn');
     const longUrlInput = document.getElementById('longUrl');
@@ -17,10 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (shortenUrlBtn && longUrlInput && customAliasInput && shortUrlResult) {
         shortenUrlBtn.addEventListener('click', async () => {
-            const longUrl = longUrlInput.value;
-            const customAlias = customAliasInput.value;
+            const longUrl = longUrlInput.value.trim();
+            const customAlias = customAliasInput.value.trim();
             if (!longUrl || !isValidUrl(longUrl)) {
-                alert('Por favor, insira uma URL válida.');
+                showToast('Por favor, insira uma URL válida.', true);
                 return;
             }
             try {
@@ -33,16 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.shorturl) {
                     const shortUrl = data.shorturl;
                     const shortCode = shortUrl.split('/').pop();
-                    const displayText = `gg/${shortCode}`;
-                    shortUrlResult.innerHTML = `<strong>URL Personalizada:</strong> <a href="${shortUrl}" target="_blank" rel="noopener noreferrer">${displayText}</a>`;
-                    shortUrlResult.style.display = 'block';
+                    renderUrlResult(shortUrlResult, 'URL Personalizada:', shortUrl, `gg/${shortCode}`);
                 } else if (data.errorcode) {
                     // Tenta fallback no TinyURL
                     const tinyRes = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
                     const tinyText = await tinyRes.text();
                     if (tinyRes.ok && tinyText.startsWith('http')) {
-                        shortUrlResult.innerHTML = `<strong>URL Curta:</strong> <a href="${tinyText}" target="_blank" rel="noopener noreferrer">${tinyText}</a>`;
-                        shortUrlResult.style.display = 'block';
+                        renderUrlResult(shortUrlResult, 'URL Curta:', tinyText, tinyText);
                     } else {
                         throw new Error(data.errormessage || 'Não foi possível encurtar a URL.');
                     }
@@ -51,8 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const tinyRes = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
                     const tinyText = await tinyRes.text();
                     if (tinyRes.ok && tinyText.startsWith('http')) {
-                        shortUrlResult.innerHTML = `<strong>URL Curta:</strong> <a href="${tinyText}" target="_blank" rel="noopener noreferrer">${tinyText}</a>`;
-                        shortUrlResult.style.display = 'block';
+                        renderUrlResult(shortUrlResult, 'URL Curta:', tinyText, tinyText);
                     } else {
                         throw new Error('Ocorreu um erro desconhecido.');
                     }
@@ -61,9 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Erro ao encurtar URL:', error);
                 let userErrorMessage = 'Erro ao encurtar a URL. Tente novamente.';
                 if (error.message && error.message.includes('already exists')) {
-                    userErrorMessage = 'Erro: Este alias personalizado já está em uso. Por favor, escolha outro.';
+                    userErrorMessage = 'Este alias personalizado já está em uso. Escolha outro.';
                 } else if (error.message) {
-                    userErrorMessage = `Erro: ${error.message}`;
+                    userErrorMessage = error.message;
                 }
                 shortUrlResult.textContent = userErrorMessage;
                 shortUrlResult.style.display = 'block';
@@ -82,12 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const number = whatsappNumberInput.value.replace(/\D/g, '');
             const message = encodeURIComponent(whatsappMessageInput.value);
             if (!number) {
-                alert('Por favor, insira um número de WhatsApp.');
+                showToast('Por favor, insira um número de WhatsApp.', true);
                 return;
             }
             const waLink = `https://wa.me/${number}?text=${message}`;
-            waLinkResult.innerHTML = `<strong>Link Gerado:</strong> <a href="${waLink}" target="_blank" rel="noopener noreferrer">${waLink}</a>`;
-            waLinkResult.style.display = 'block';
+            renderUrlResult(waLinkResult, 'Link Gerado:', waLink, waLink);
         });
     }
 

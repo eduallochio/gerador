@@ -12,6 +12,9 @@
     <meta name="msapplication-TileColor" content="#4361ee">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     
+    <!-- Script inline para evitar FOUC (flash) no dark mode antes do CSS carregar -->
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+
     <!-- Preconnect crítico para performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -110,7 +113,10 @@
                 <i class="fa-solid fa-shield-halved"></i>
                 <h1>Gerador Guardião</h1>
             </a>
-            <div class="nav-controls">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="navControls">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-controls" id="navControls">
                 <nav class="nav">
                     <a href="pages/ferramentas.html" class="nav-link">Ferramentas</a>
                     <a href="#artigos" class="nav-link">Aprenda</a>
@@ -286,7 +292,7 @@
             </div>
         </section>
 
-        <section class="resource-section">
+        <section id="artigos" class="resource-section">
             <div class="container">
                 <h2>Aprenda Mais Sobre Segurança</h2>
                 <p class="section-subtitle">Fortaleça seus conhecimentos com artigos do nosso blog e de fontes
@@ -295,7 +301,7 @@
                 <div class="articles-grid">
                     <div class="featured-article-card">
                         <a href="artigos/senhas-seguras-escudo-digital.html" class="featured-article-link">
-                            <img src="img/imagem-senha.webp" alt="Ilustração de segurança digital com escudo e chave representando proteção de senhas">
+                            <img src="img/imagem-senha.webp" alt="Ilustração de segurança digital com escudo e chave representando proteção de senhas" width="800" height="250" loading="lazy">
                             <div class="card-content">
                                 <span class="card-category">Nosso Blog</span>
                                 <h3>Por que uma Senha Forte é seu Melhor Escudo Digital?</h3>
@@ -462,11 +468,13 @@
                 <ul>
                     <li><strong>Dados Gerados Localmente:</strong> Todas as senhas são criadas exclusivamente no seu
                         navegador. Elas nunca tocam nossos servidores.</li>
-                    <li><strong>Dados de Preferência:</strong> Utilizamos o `localStorage` do seu navegador para salvar
+                    <li><strong>Dados de Preferência:</strong> Utilizamos o <code>localStorage</code> do seu navegador para salvar
                         as suas preferências de uso, como a ativação do "Modo Escuro".</li>
-                    <li><strong>Dados de Contagem (Anônimos):</strong> Para fins estatísticos, utilizamos um serviço de
-                        backend (Supabase) para incrementar um contador numérico a cada senha gerada. Este processo é
-                        totalmente anônimo.</li>
+                    <li><strong>Contagem de Senhas (Anônima):</strong> Para fins estatísticos, utilizamos um serviço
+                        de backend (Supabase) para incrementar um contador numérico global a cada senha gerada. Este
+                        processo é totalmente anônimo — <strong>nenhuma senha é armazenada</strong>, apenas o número
+                        total de senhas criadas. O contador do dia também é salvo localmente via
+                        <code>localStorage</code> para exibição imediata.</li>
                 </ul>
                 <h3>2. Uso de Cookies e Tecnologias de Terceiros</h3>
                 <p>Para monetizar e manter este site gratuito, utilizamos o Google AdSense, que usa cookies para exibir
@@ -509,9 +517,9 @@
         </div>
     </div>
 
-    <!-- Carrega Supabase de forma otimizada -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="console.error('Falha ao carregar Supabase')"></script>
-    
+    <!-- Supabase para contador global (só armazena números, zero senhas) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- Scripts da aplicação com defer para melhor performance -->
     <script defer src="js/theme-switcher.js"></script>
     <script defer src="js/script.js"></script>

@@ -1,15 +1,15 @@
-// Configuração global do Supabase
-let supabaseClient = null;
-let supabaseInitialized = false;
+// --- Supabase (contador global anônimo — apenas números, zero senhas armazenadas) ---
+const _SB_URL = 'https://ozijuhsgcujnqhhpfise.supabase.co';
+const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96aWp1aHNnY3VqbnFoaHBmaXNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NTMwNjgsImV4cCI6MjA2OTAyOTA2OH0.b9IKmeWAZnuHbVhEqL5BEw2d1n2EYxC9nnhzYwmWm9I';
+let _db = null;
 
-// Função para validar URL
-function isValidUrl(url) {
+function initSupabase() {
     try {
-        new URL(url);
-        return true;
-    } catch (e) {
-        return false;
-    }
+        if (typeof window.supabase === 'undefined') return;
+        _db = window.supabase.createClient(_SB_URL, _SB_KEY, {
+            auth: { persistSession: false, autoRefreshToken: false }
+        });
+    } catch (e) { /* silent */ }
 }
 
 // Função para mostrar notificações
@@ -27,97 +27,88 @@ function showToast(message, isError = false) {
     }
 }
 
-// Função para inicializar o Supabase com validação robusta
-async function initializeSupabase() {
-    try {
-        // Verifica se o Supabase foi carregado
-        if (typeof window.supabase === 'undefined') {
-            throw new Error('Biblioteca Supabase não carregada');
-        }
-
-        const supabaseConfig = {
-            url: 'https://ozijuhsgcujnqhhpfise.supabase.co', // URL do seu projeto Supabase
-            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96aWp1aHNnY3VqbnFoaHBmaXNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NTMwNjgsImV4cCI6MjA2OTAyOTA2OH0.b9IKmeWAZnuHbVhEqL5BEw2d1n2EYxC9nnhzYwmWm9I' // Chave 'anon' do seu projeto
-        };
-
-        if (!supabaseConfig.url || !supabaseConfig.key) {
-            throw new Error('Credenciais do Supabase não fornecidas');
-        }
-
-        if (!isValidUrl(supabaseConfig.url)) {
-            throw new Error('URL do Supabase inválida');
-        }
-
-        const cleanUrl = supabaseConfig.url.endsWith('/') 
-            ? supabaseConfig.url.slice(0, -1) 
-            : supabaseConfig.url;
-
-        supabaseClient = window.supabase.createClient(cleanUrl, supabaseConfig.key, {
-            db: { schema: 'public' },
-            auth: { persistSession: false, autoRefreshToken: false }
-        });
-
-        const { error: testError } = await supabaseClient
-            .from('password_stats')
-            .select('id')
-            .limit(1);
-
-        if (testError && testError.code !== 'PGRST116') { // PGRST116 = tabela vazia, o que é aceitável
-            throw testError;
-        }
-
-        supabaseInitialized = true;
-        console.log('Supabase inicializado com sucesso');
-        return true;
-    } catch (error) {
-        console.error('Erro ao inicializar Supabase:', error);
-        supabaseInitialized = false;
-        // Não mostra toast de erro aqui - apenas log silencioso
-        return false;
-    }
-}
-
 
 // --- Funções de Geração de Senha ---
 function generatePassword(elements, charSets) {
     try {
-        let charSet = '';
-        if (elements.optionsCheckboxes.includeUppercase.checked) charSet += charSets.uppercase;
-        if (elements.optionsCheckboxes.includeLowercase.checked) charSet += charSets.lowercase;
-        if (elements.optionsCheckboxes.includeNumbers.checked) charSet += charSets.numbers;
-        if (elements.optionsCheckboxes.includeSymbols.checked) charSet += charSets.symbols;
+        const useUppercase = elements.optionsCheckboxes.includeUppercase.checked;
+        const useLowercase = elements.optionsCheckboxes.includeLowercase.checked;
+        const useNumbers   = elements.optionsCheckboxes.includeNumbers.checked;
+        const useSymbols   = elements.optionsCheckboxes.includeSymbols.checked;
+        const excludeAmbiguous = elements.optionsCheckboxes.excludeAmbiguous.checked;
 
-        if (elements.optionsCheckboxes.excludeAmbiguous.checked) {
-            charSet = charSet.split('').filter(char => !charSets.ambiguous.includes(char)).join('');
+        const filterAmbiguous = (str) =>
+            excludeAmbiguous ? str.split('').filter(c => !charSets.ambiguous.includes(c)).join('') : str;
+
+        let charSet = '';
+        const guaranteedChars = [];
+
+        if (useUppercase) {
+            const set = filterAmbiguous(charSets.uppercase);
+            charSet += set;
+            if (set.length) guaranteedChars.push(set);
         }
-        
+        if (useLowercase) {
+            const set = filterAmbiguous(charSets.lowercase);
+            charSet += set;
+            if (set.length) guaranteedChars.push(set);
+        }
+        if (useNumbers) {
+            const set = filterAmbiguous(charSets.numbers);
+            charSet += set;
+            if (set.length) guaranteedChars.push(set);
+        }
+        if (useSymbols) {
+            const set = filterAmbiguous(charSets.symbols);
+            charSet += set;
+            if (set.length) guaranteedChars.push(set);
+        }
+
         if (charSet === '') {
             elements.passwordDisplay.value = 'Selecione uma opção!';
             updateStrengthIndicator('', elements);
-            return;
+            return false;
         }
 
-        let password = '';
         const length = parseInt(elements.lengthSlider.value);
-        
-        if (window.crypto && window.crypto.getRandomValues) {
-            const randomValues = new Uint32Array(length);
-            window.crypto.getRandomValues(randomValues);
-            for (let i = 0; i < length; i++) {
-                password += charSet[randomValues[i] % charSet.length];
+        const getRandomChar = (set) => {
+            if (window.crypto && window.crypto.getRandomValues) {
+                const arr = new Uint32Array(1);
+                window.crypto.getRandomValues(arr);
+                return set[arr[0] % set.length];
             }
-        } else { // Fallback para navegadores antigos
-            for (let i = 0; i < length; i++) {
-                password += charSet[Math.floor(Math.random() * charSet.length)];
-            }
+            return set[Math.floor(Math.random() * set.length)];
+        };
+
+        // Garante ao menos um caractere de cada tipo selecionado
+        let passwordChars = guaranteedChars.map(set => getRandomChar(set));
+
+        // Preenche o restante aleatoriamente
+        while (passwordChars.length < length) {
+            passwordChars.push(getRandomChar(charSet));
         }
 
+        // Embaralha para que os chars garantidos não fiquem sempre no início
+        if (window.crypto && window.crypto.getRandomValues) {
+            const swapArr = new Uint32Array(passwordChars.length);
+            window.crypto.getRandomValues(swapArr);
+            for (let i = passwordChars.length - 1; i > 0; i--) {
+                const j = swapArr[i] % (i + 1);
+                [passwordChars[i], passwordChars[j]] = [passwordChars[j], passwordChars[i]];
+            }
+        } else {
+            passwordChars.sort(() => Math.random() - 0.5);
+        }
+
+        const password = passwordChars.join('');
         elements.passwordDisplay.value = password;
         updateStrengthIndicator(password, elements);
+        return true;
     } catch (error) {
         console.error('Erro ao gerar senha:', error);
         elements.passwordDisplay.value = 'Erro ao gerar senha';
         updateStrengthIndicator('', elements);
+        return false;
     }
 }
 
@@ -164,136 +155,54 @@ function updateStrengthIndicator(password, elements) {
 }
 
 // --- Funções de Contador ---
-
-// Garante que o registro de estatísticas exista no Supabase
-async function ensureStatsRecord() {
-    if (!supabaseInitialized) return null;
-    
-    try {
-        let { data, error } = await supabaseClient
-            .from('password_stats')
-            .select('id')
-            .limit(1)
-            .single();
-        
-        if (error && error.code !== 'PGRST116') throw error; // Ignora erro de "nenhuma linha", que é esperado
-        
-        if (!data) { // Se não há registro, cria um
-            console.log("Nenhum registro encontrado. Criando um novo...");
-            const { data: newData, error: createError } = await supabaseClient
-                .from('password_stats')
-                .insert([{ total_count: 0, today_count: 0, last_updated: new Date().toISOString() }])
-                .select('id')
-                .single();
-            
-            if (createError) throw createError;
-            return newData;
-        }
-        
-        return data;
-    } catch (error) {
-        console.error('Erro ao garantir registro de estatísticas:', error);
-        return null;
-    }
+// Leitura/escrita local para exibição imediata (sem latência)
+function _getLocalStats() {
+    const today = new Date().toDateString();
+    const s = JSON.parse(localStorage.getItem('passwordStats')) || { total: 0, today: 0, lastDate: today };
+    if (s.lastDate !== today) { s.today = 0; s.lastDate = today; }
+    return s;
 }
 
-// Obtém e sincroniza as estatísticas
-async function getPasswordStats(elements) {
-    const today = new Date().toDateString();
-    let stats = { total: 0, today: 0, lastDate: today };
+// Carrega contagens: exibe local imediatamente, depois sincroniza com o global
+function getPasswordStats(elements) {
+    const local = _getLocalStats();
+    updateCounterDisplays(local, elements);
 
-    try {
-        const localStats = JSON.parse(localStorage.getItem('passwordStats')) || stats;
-        
-        if (localStats.lastDate !== today) {
-            localStats.today = 0;
-            localStats.lastDate = today;
-        }
-        stats = localStats;
-
-        if (supabaseInitialized) {
-            const record = await ensureStatsRecord();
-            if (record && record.id) {
-                const { data: serverStats, error } = await supabaseClient
-                    .from('password_stats')
-                    .select('*')
-                    .eq('id', record.id)
-                    .single();
-
-                if (error) throw error;
-                
-                const serverDate = new Date(serverStats.last_updated).toDateString();
-                
-                if (serverDate !== today) {
-                    const { error: updateError } = await supabaseClient
-                        .from('password_stats')
-                        .update({ today_count: 0, last_updated: new Date().toISOString() })
-                        .eq('id', record.id);
-                    
-                    if (updateError) throw updateError;
-                    stats.today = 0;
-                } else {
-                    stats.today = serverStats.today_count;
-                }
-                stats.total = serverStats.total_count;
-            }
-        }
-    } catch (error) {
-        console.error('Erro ao obter estatísticas do Supabase:', error);
-    }
-    
-    localStorage.setItem('passwordStats', JSON.stringify(stats));
-    updateCounterDisplays(stats, elements);
+    if (!_db) return;
+    _db.from('password_stats').select('total_count, today_count, last_updated').limit(1).single()
+        .then(({ data }) => {
+            if (!data) return;
+            const today = new Date().toDateString();
+            const serverDate = new Date(data.last_updated).toDateString();
+            updateCounterDisplays({
+                total: data.total_count,
+                today: serverDate === today ? data.today_count : 0
+            }, elements);
+        })
+        .catch(() => { /* sem internet ou Supabase indisponível — continua com local */ });
 }
 
-// LÓGICA CORRIGIDA para incrementar os contadores
-async function incrementCounters(elements) {
+// Incrementa local imediatamente (UI responsiva) e global em background (fire-and-forget)
+function incrementCounters(elements) {
     const today = new Date().toDateString();
-    
-    let localStats = JSON.parse(localStorage.getItem('passwordStats')) || {
-        total: 0, today: 0, lastDate: today
-    };
+    const local = _getLocalStats();
+    local.today++;
+    local.total++;
+    localStorage.setItem('passwordStats', JSON.stringify(local));
+    updateCounterDisplays(local, elements);
 
-    if (localStats.lastDate !== today) {
-        localStats.today = 0;
-        localStats.lastDate = today;
-    }
-
-    localStats.today++;
-    localStats.total++;
-    localStorage.setItem('passwordStats', JSON.stringify(localStats));
-    updateCounterDisplays(localStats, elements);
-
-    if (!supabaseInitialized) return;
-
-    try {
-        const record = await ensureStatsRecord();
-        if (record && record.id) {
-            const { data: currentStats, error: fetchError } = await supabaseClient
-                .from('password_stats')
-                .select('total_count, today_count, last_updated')
-                .eq('id', record.id)
-                .single();
-
-            if (fetchError) throw fetchError;
-
-            const currentServerDate = new Date(currentStats.last_updated).toDateString();
-            const newTodayCount = (currentServerDate === today) ? currentStats.today_count + 1 : 1;
-            
-            const { error: updateError } = await supabaseClient
-                .from('password_stats')
-                .update({
-                    total_count: currentStats.total_count + 1,
-                    today_count: newTodayCount,
-                    last_updated: new Date().toISOString()
-                })
-                .eq('id', record.id);
-            
-            if (updateError) throw updateError;
-        }
-    } catch (error) {
-        console.error('Erro ao incrementar contadores no Supabase:', error);
-    }
+    if (!_db) return;
+    _db.from('password_stats').select('id, total_count, today_count, last_updated').limit(1).single()
+        .then(({ data }) => {
+            if (!data) return;
+            const serverDate = new Date(data.last_updated).toDateString();
+            return _db.from('password_stats').update({
+                total_count: data.total_count + 1,
+                today_count: serverDate === today ? data.today_count + 1 : 1,
+                last_updated: new Date().toISOString()
+            }).eq('id', data.id);
+        })
+        .catch(() => { /* silent — local já foi atualizado */ });
 }
 
 function updateCounterDisplays(stats, elements) {
@@ -323,8 +232,8 @@ function setupEventListeners(elements, charSets) {
         });
 
         elements.generateButton.addEventListener('click', () => {
-            generatePassword(elements, charSets);
-            incrementCounters(elements);
+            const generated = generatePassword(elements, charSets);
+            if (generated) incrementCounters(elements);
         });
 
         elements.copyButton.addEventListener('click', async () => {
@@ -345,6 +254,31 @@ function setupEventListeners(elements, charSets) {
 
     } catch (error) {
         console.error('Erro ao configurar event listeners:', error);
+    }
+}
+
+function setupHamburger() {
+    try {
+        const btn = document.getElementById('hamburgerBtn');
+        const nav = document.getElementById('navControls');
+        if (!btn || !nav) return;
+
+        btn.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('open');
+            btn.classList.toggle('open', isOpen);
+            btn.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Fecha o menu ao clicar em um link de navegação
+        nav.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('open');
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            });
+        });
+    } catch (error) {
+        console.error('Erro ao configurar hamburger:', error);
     }
 }
 
@@ -468,7 +402,7 @@ function setupModals() {
 }
 
 // --- Inicialização da Aplicação ---
-async function initializeApp() {
+function initializeApp() {
     try {
         const elements = {
             todayCounter: document.getElementById('todayCounter'),
@@ -510,13 +444,13 @@ async function initializeApp() {
         }
 
         setupEventListeners(elements, charSets);
+        setupHamburger();
         setupFAQ();
-        setupModals(); // CHAMADA DA NOVA FUNÇÃO
+        setupModals();
         setupSocialSharing();
         updateCopyrightYear();
-        
-        await getPasswordStats(elements);
-        
+        getPasswordStats(elements);
+
         elements.passwordDisplay.value = 'Selecione as opções e clique em "Gerar Nova Senha"';
         updateStrengthIndicator('', elements);
 
@@ -527,24 +461,16 @@ async function initializeApp() {
 }
 
 // --- Ponto de Entrada ---
-// Garante que todos os recursos estejam carregados antes de inicializar
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initApp);
 } else {
-    // DOM já está pronto
     initApp();
 }
 
-async function initApp() {
+function initApp() {
     try {
-        // Aguarda um pouco para garantir que scripts externos estejam prontos
-        if (typeof window.supabase === 'undefined') {
-            console.warn('Supabase ainda não carregado, tentando novamente...');
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-        
-        await initializeSupabase();
-        await initializeApp();
+        initSupabase(); // não-bloqueante — falha silenciosamente se indisponível
+        initializeApp();
     } catch (error) {
         console.error('Erro crítico na inicialização:', error);
         showToast('Ocorreu um erro ao carregar. Recarregue a página.', true);

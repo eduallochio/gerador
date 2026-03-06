@@ -4,9 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
     <title>Ferramentas Online - Gerador Guardião</title>
     <meta name="description"
         content="Coleção de ferramentas online gratuitas: encurtador de URL, gerador de link para WhatsApp e gerador de QR Code.">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ferramentas Online Gratuitas - Gerador Guardião">
+    <meta property="og:description" content="Encurtador de URL, gerador de QR Code, link para WhatsApp e mais. Ferramentas gratuitas para o seu dia a dia digital.">
+    <meta property="og:image" content="https://geradorguardiao.com.br/img/imagem-senha.webp">
+    <meta property="og:url" content="https://geradorguardiao.com.br/pages/ferramentas.html">
+    <meta property="og:site_name" content="Gerador Guardião">
+    <meta property="og:locale" content="pt_BR">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ferramentas Online Gratuitas - Gerador Guardião">
+    <meta name="twitter:description" content="Encurtador de URL, gerador de QR Code, link para WhatsApp e mais.">
+    <meta name="twitter:image" content="https://geradorguardiao.com.br/img/imagem-senha.webp">
     <meta name="google-adsense-account" content="ca-pub-4896814460874070">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4896814460874070"
         crossorigin="anonymous"></script>
@@ -23,13 +38,17 @@
 </head>
 
 <body>
+    <div id="toastNotification" class="toast"></div>
     <header class="header">
         <div class="container">
             <a href="../index.html" class="logo">
                 <i class="fa-solid fa-shield-halved"></i>
                 <h1>Gerador Guardião</h1>
             </a>
-            <div class="nav-controls">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="navControls">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-controls" id="navControls">
                 <nav class="nav">
                     <a href="../index.html#artigos" class="nav-link">Aprenda</a>
                     <a href="../index.html#faq" class="nav-link">FAQ</a>
@@ -144,6 +163,25 @@
 
     <script src="../js/ferramentas.js"></script>
     <script src="../js/theme-switcher.js"></script>
+    <script>
+        (function() {
+            const btn = document.getElementById('hamburgerBtn');
+            const nav = document.getElementById('navControls');
+            if (!btn || !nav) return;
+            btn.addEventListener('click', () => {
+                const isOpen = nav.classList.toggle('open');
+                btn.classList.toggle('open', isOpen);
+                btn.setAttribute('aria-expanded', isOpen);
+            });
+            nav.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('open');
+                    btn.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                });
+            });
+        })();
+    </script>
 </body>
 
 </html>

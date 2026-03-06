@@ -1,20 +1,6 @@
-// Inicialização do tema - executa imediatamente para evitar flash
-(function() {
-    try {
-        // Aplica o tema salvo ANTES do DOM carregar para evitar flash
-        const isDarkMode = localStorage.getItem('darkMode') === 'true';
-        if (isDarkMode) {
-            document.documentElement.classList.add('dark-mode');
-            if (document.body) {
-                document.body.classList.add('dark-mode');
-            }
-        }
-    } catch (error) {
-        console.error('Erro ao aplicar tema inicial:', error);
-    }
-})();
-
-// Configura o toggle quando o DOM estiver pronto
+// Configura o toggle quando o DOM estiver pronto.
+// A aplicação inicial do tema é feita por um script inline no <head> de cada página,
+// garantindo que não haja FOUC (flash of unstyled content).
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setupThemeToggle);
 } else {
@@ -33,11 +19,17 @@ function setupThemeToggle() {
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         darkModeToggle.checked = isDarkMode;
 
+        // Aplica a classe no body caso o script inline só tenha aplicado no <html>
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+        }
+
         // Adiciona o listener para a mudança de tema
         darkModeToggle.addEventListener('change', () => {
-            document.body.classList.toggle('dark-mode');
-            document.documentElement.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', darkModeToggle.checked);
+            const enabled = darkModeToggle.checked;
+            document.body.classList.toggle('dark-mode', enabled);
+            document.documentElement.classList.toggle('dark-mode', enabled);
+            localStorage.setItem('darkMode', enabled);
         });
     } catch (error) {
         console.error('Erro ao configurar o modo escuro:', error);
