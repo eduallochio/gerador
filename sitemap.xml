@@ -2,31 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://geradorguardiao.com.br/</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://geradorguardiao.com.br/pages/ferramentas.html</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://geradorguardiao.com.br/pages/link-bio.html</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://geradorguardiao.com.br/pages/link-page.html</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://geradorguardiao.com.br/artigos/senhas-seguras-escudo-digital.html</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://geradorguardiao.com.br/artigos/gerenciadores-senhas-tecnologias-avancadas.html</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
