@@ -167,7 +167,12 @@
                     </div>
 
                     <div class="strength-indicator-container">
-                        <div class="strength-bar" id="strengthBar"></div>
+                        <div class="strength-bar-track" id="strengthBar">
+                            <div class="strength-segment"></div>
+                            <div class="strength-segment"></div>
+                            <div class="strength-segment"></div>
+                            <div class="strength-segment"></div>
+                        </div>
                         <span id="strengthText">Força</span>
                     </div>
 
@@ -541,7 +546,7 @@
             document.querySelectorAll('.dynamic-date').forEach(element => {
                 const today = new Date();
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                element.innerHTML += today.toLocaleDateString('pt-BR', options);
+                element.textContent += today.toLocaleDateString('pt-BR', options);
             });
         });
     </script>

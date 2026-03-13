@@ -116,12 +116,11 @@ function updateStrengthIndicator(password, elements) {
     try {
         let score = 0;
         if (!password) {
-            elements.strengthBar.style.width = '0%';
             elements.strengthText.textContent = 'Força';
-            elements.strengthBar.className = 'strength-bar';
+            elements.strengthBar.className = 'strength-bar-track';
             return;
         }
-        
+
         if (password.length >= 8) score++;
         if (password.length >= 12) score++;
         if (password.length >= 16) score++;
@@ -129,23 +128,19 @@ function updateStrengthIndicator(password, elements) {
         if (/[a-z]/.test(password)) score++;
         if (/[0-9]/.test(password)) score++;
         if (/[^A-Za-z0-9]/.test(password)) score++;
-        
-        elements.strengthBar.className = 'strength-bar';
-        
+
+        elements.strengthBar.className = 'strength-bar-track';
+
         if (score <= 3) {
-            elements.strengthBar.style.width = '25%';
             elements.strengthBar.classList.add('strength-weak');
             elements.strengthText.textContent = 'Força: Fraca';
         } else if (score <= 5) {
-            elements.strengthBar.style.width = '50%';
             elements.strengthBar.classList.add('strength-medium');
             elements.strengthText.textContent = 'Força: Média';
         } else if (score <= 6) {
-            elements.strengthBar.style.width = '75%';
             elements.strengthBar.classList.add('strength-strong');
             elements.strengthText.textContent = 'Força: Forte';
         } else {
-            elements.strengthBar.style.width = '100%';
             elements.strengthBar.classList.add('strength-very-strong');
             elements.strengthText.textContent = 'Força: Muito Forte';
         }
@@ -158,7 +153,13 @@ function updateStrengthIndicator(password, elements) {
 // Leitura/escrita local para exibição imediata (sem latência)
 function _getLocalStats() {
     const today = new Date().toDateString();
-    const s = JSON.parse(localStorage.getItem('passwordStats')) || { total: 0, today: 0, lastDate: today };
+    let s;
+    try {
+        s = JSON.parse(localStorage.getItem('passwordStats'));
+    } catch (e) {
+        s = null;
+    }
+    s = s || { total: 0, today: 0, lastDate: today };
     if (s.lastDate !== today) { s.today = 0; s.lastDate = today; }
     return s;
 }
@@ -215,10 +216,21 @@ function updateCounterDisplays(stats, elements) {
 // --- Configuração de Event Listeners ---
 function setupEventListeners(elements, charSets) {
     try {
+        const updateSliderProgress = () => {
+            const slider = elements.lengthSlider;
+            const min = parseInt(slider.min);
+            const max = parseInt(slider.max);
+            const val = parseInt(slider.value);
+            const pct = ((val - min) / (max - min) * 100).toFixed(1) + '%';
+            slider.style.setProperty('--slider-progress', pct);
+        };
+
         elements.lengthSlider.addEventListener('input', () => {
             elements.lengthValue.textContent = elements.lengthSlider.value;
+            updateSliderProgress();
             generatePassword(elements, charSets);
         });
+        updateSliderProgress();
 
         document.querySelectorAll('.length-btn').forEach(button => {
             button.addEventListener('click', () => {
@@ -242,6 +254,8 @@ function setupEventListeners(elements, charSets) {
                 if (!password || password === 'Selecione uma opção!' || password === 'Selecione as opções e clique em "Gerar Nova Senha"') return;
                 await navigator.clipboard.writeText(password);
                 showToast('Senha copiada com sucesso!');
+                elements.copyButton.classList.add('copied');
+                setTimeout(() => elements.copyButton.classList.remove('copied'), 1800);
             } catch (err) {
                 console.error('Erro ao copiar senha:', err);
                 showToast('Falha ao copiar a senha', true);

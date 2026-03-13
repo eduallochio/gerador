@@ -897,7 +897,7 @@ input:checked + .slider:before {
   border-radius: var(--border-radius);
   padding: 16px;
   position: fixed;
-  z-index: 2000;
+  z-index: 3000;
   left: 50%;
   transform: translateX(-50%);
   bottom: 30px;
@@ -1319,4 +1319,223 @@ input:checked + .slider:before {
 
 .modal-body ul {
   padding-left: 20px;
+}
+
+/* =================================== */
+/* ===   Melhorias Visuais v2.0    === */
+/* =================================== */
+
+/* --- Widget Principal: borda gradiente animada --- */
+.generator-widget {
+  position: relative;
+  background-clip: padding-box;
+  overflow: visible;
+}
+
+.generator-widget::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--border-radius) + 1px);
+  background: linear-gradient(135deg, rgba(67, 97, 238, 0.35) 0%, rgba(76, 201, 240, 0.25) 50%, rgba(67, 97, 238, 0.1) 100%);
+  z-index: -1;
+  transition: opacity 0.4s ease;
+  opacity: 0;
+}
+
+.generator-widget:hover::before,
+.generator-widget:focus-within::before {
+  opacity: 1;
+}
+
+/* --- Password Display: foco com glow --- */
+#passwordDisplay {
+  letter-spacing: 0.06em;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#passwordDisplay:not(:placeholder-shown) {
+  border-color: rgba(67, 97, 238, 0.4);
+}
+
+#passwordDisplay:focus {
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15), inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Botão Copiar: efeito "copiado" elegante --- */
+.copy-btn {
+  min-width: 52px;
+  overflow: hidden;
+}
+
+.copy-btn::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 200%);
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.copy-btn.copied {
+  background-color: #22c55e;
+  border-color: #22c55e;
+  color: transparent;
+}
+
+.copy-btn.copied i {
+  opacity: 0;
+  transform: translateY(-200%);
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.copy-btn.copied::after {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* --- Barra de Força: segmentada e animada --- */
+.strength-indicator-container {
+  margin-bottom: 1.5rem;
+}
+
+.strength-bar-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-bottom: 6px;
+}
+
+.strength-segment {
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--border-color);
+  transition: background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Fraca: 1 segmento */
+.strength-bar-track.strength-weak .strength-segment:nth-child(1) {
+  background-color: var(--weak-color);
+  box-shadow: 0 0 8px rgba(247, 37, 133, 0.5);
+}
+
+/* Média: 2 segmentos */
+.strength-bar-track.strength-medium .strength-segment:nth-child(1),
+.strength-bar-track.strength-medium .strength-segment:nth-child(2) {
+  background-color: var(--medium-color);
+  box-shadow: 0 0 8px rgba(248, 150, 30, 0.5);
+}
+
+/* Forte: 3 segmentos */
+.strength-bar-track.strength-strong .strength-segment:nth-child(1),
+.strength-bar-track.strength-strong .strength-segment:nth-child(2),
+.strength-bar-track.strength-strong .strength-segment:nth-child(3) {
+  background-color: var(--strong-color);
+  box-shadow: 0 0 8px rgba(76, 201, 240, 0.5);
+}
+
+/* Muito Forte: todos os segmentos */
+.strength-bar-track.strength-very-strong .strength-segment {
+  background-color: var(--very-strong-color);
+  box-shadow: 0 0 8px rgba(67, 97, 238, 0.5);
+}
+
+/* --- Botão Gerar: shimmer no hover --- */
+.generate-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.generate-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transition: left 0.5s ease;
+}
+
+.generate-button:hover::after {
+  left: 160%;
+}
+
+.generate-button:active {
+  transform: scale(0.98);
+}
+
+/* --- Toggles de Opções: visual mais polido --- */
+.toggle-slider {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.option-toggle input:checked + .toggle-slider {
+  box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2), inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.option-toggle:hover .toggle-slider {
+  filter: brightness(1.08);
+}
+
+.option-label {
+  font-weight: 500;
+}
+
+/* --- Counters: gradiente sutil --- */
+.counter {
+  background: linear-gradient(135deg, var(--widget-background) 0%, rgba(67, 97, 238, 0.03) 100%);
+  transition: var(--transition), transform 0.2s ease;
+}
+
+.counter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(67, 97, 238, 0.1);
+}
+
+/* --- FAQ: borda lateral no active --- */
+.faq-card.active {
+  border-left: 3px solid var(--primary-color);
+}
+
+/* --- Feature cards: icon glow no hover --- */
+.feature-card:hover i {
+  filter: drop-shadow(0 0 8px rgba(67, 97, 238, 0.5));
+  transition: filter 0.3s ease;
+}
+
+/* --- Slider de comprimento: track preenchida --- */
+#lengthSlider {
+  background: linear-gradient(
+    to right,
+    var(--primary-color) 0%,
+    var(--primary-color) calc((var(--slider-progress, 33.33%) )),
+    var(--border-color) calc((var(--slider-progress, 33.33%) )),
+    var(--border-color) 100%
+  );
+}
+
+/* --- Dark mode: melhorias específicas --- */
+html.dark-mode .generator-widget::before,
+body.dark-mode .generator-widget::before {
+  background: linear-gradient(135deg, rgba(76, 201, 240, 0.2) 0%, rgba(67, 97, 238, 0.15) 50%, rgba(76, 201, 240, 0.05) 100%);
+}
+
+html.dark-mode .counter,
+body.dark-mode .counter {
+  background: linear-gradient(135deg, var(--widget-background) 0%, rgba(76, 201, 240, 0.04) 100%);
+}
+
+html.dark-mode #passwordDisplay:not(:placeholder-shown),
+body.dark-mode #passwordDisplay:not(:placeholder-shown) {
+  border-color: rgba(76, 201, 240, 0.3);
+}
+
+html.dark-mode #passwordDisplay:focus,
+body.dark-mode #passwordDisplay:focus {
+  box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.12), inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
