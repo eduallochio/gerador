@@ -5,32 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
-    <title>Ferramentas Online - Gerador Guardião</title>
+    <title>Ferramentas Online Gratuitas: QR Code, Link WhatsApp, Encurtador | Gerador Guardião</title>
     <meta name="description"
-        content="Coleção de ferramentas online gratuitas: encurtador de URL, gerador de link para WhatsApp e gerador de QR Code.">
+        content="Ferramentas online gratuitas e fáceis de usar: encurtador de URL, gerador de QR Code personalizado, link direto para WhatsApp e página de links para bio. Sem cadastro.">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#4361ee">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Ferramentas Online Gratuitas - Gerador Guardião">
-    <meta property="og:description" content="Encurtador de URL, gerador de QR Code, link para WhatsApp e mais. Ferramentas gratuitas para o seu dia a dia digital.">
+    <meta property="og:title" content="Ferramentas Online Gratuitas: QR Code, Link WhatsApp | Gerador Guardião">
+    <meta property="og:description" content="Encurtador de URL, QR Code personalizado, link direto para WhatsApp e página de links para bio. Tudo grátis, sem cadastro.">
     <meta property="og:image" content="https://geradorguardiao.com.br/img/imagem-senha.webp">
     <meta property="og:url" content="https://geradorguardiao.com.br/pages/ferramentas.html">
     <meta property="og:site_name" content="Gerador Guardião">
     <meta property="og:locale" content="pt_BR">
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Ferramentas Online Gratuitas - Gerador Guardião">
-    <meta name="twitter:description" content="Encurtador de URL, gerador de QR Code, link para WhatsApp e mais.">
+    <meta name="twitter:title" content="Ferramentas Online Gratuitas: QR Code, Link WhatsApp | Gerador Guardião">
+    <meta name="twitter:description" content="Encurtador de URL, QR Code personalizado, link para WhatsApp e página de links. Grátis, sem cadastro.">
     <meta name="twitter:image" content="https://geradorguardiao.com.br/img/imagem-senha.webp">
     <meta name="google-adsense-account" content="ca-pub-4896814460874070">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4896814460874070"
         crossorigin="anonymous"></script>
     <link rel="icon" href="../img/guardiao-icon.svg" type="image/svg+xml">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Ferramentas Online Gratuitas",
+      "description": "Coleção de ferramentas digitais gratuitas: encurtador de URL, gerador de QR Code, link para WhatsApp e página de links para bio.",
+      "url": "https://geradorguardiao.com.br/pages/ferramentas.html",
+      "isPartOf": { "@type": "WebSite", "name": "Gerador Guardião", "url": "https://geradorguardiao.com.br/" }
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="canonical" href="https://geradorguardiao.com.br/pages/ferramentas.html">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
@@ -69,6 +78,16 @@
     <main>
         <section class="tools-section">
             <div class="container">
+                <!-- Banner AdSense topo ferramentas -->
+                <div class="ad-banner-slot" aria-label="Publicidade" style="margin-bottom:1.5rem">
+                    <ins class="adsbygoogle"
+                         style="display:block;width:100%;min-height:90px"
+                         data-ad-client="ca-pub-4896814460874070"
+                         data-ad-slot="auto"
+                         data-ad-format="horizontal"
+                         data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
                 <div class="tool-widget-promo">
                     <h2><i class="fas fa-star"></i> Nova Ferramenta: Gerador de Link na Bio</h2>
                     <p>Crie uma página elegante e personalizável para agrupar todos os seus links importantes. Perfeito
@@ -84,6 +103,17 @@
                     <button id="shortenUrlBtn" class="tool-button">Encurtar URL</button>
                     <div id="shortUrlResult" class="result-box" style="display: none;"></div>
                 </div>
+                <!-- Banner in-feed entre ferramentas -->
+                <div class="ad-banner-slot-rect" aria-label="Publicidade" style="margin:0 auto 2rem;max-width:336px;min-height:280px">
+                    <ins class="adsbygoogle"
+                         style="display:block;width:336px;min-height:280px"
+                         data-ad-client="ca-pub-4896814460874070"
+                         data-ad-slot="auto"
+                         data-ad-format="rectangle"
+                         data-full-width-responsive="false"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+
                 <div id="whatsapp-generator" class="tool-widget">
                     <h2>Gerador de Link para WhatsApp</h2>
                     <div class="form-group"><label for="whatsappNumber">Número (com código do país, ex:
@@ -95,6 +125,17 @@
                     <button id="generateWaLinkBtn" class="tool-button">Gerar Link</button>
                     <div id="waLinkResult" class="result-box" style="display: none;"></div>
                 </div>
+                <!-- Banner in-feed entre ferramentas -->
+                <div class="ad-banner-slot" aria-label="Publicidade" style="margin-bottom:2rem">
+                    <ins class="adsbygoogle"
+                         style="display:block;width:100%;min-height:90px"
+                         data-ad-client="ca-pub-4896814460874070"
+                         data-ad-slot="auto"
+                         data-ad-format="horizontal"
+                         data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+
                 <div id="qrcode-generator" class="tool-widget">
                     <h2>Gerador de QR Code Personalizado</h2>
                     <div class="form-group"><label for="qrText">Texto ou URL</label><input type="text" id="qrText"

@@ -1,134 +1,88 @@
 # 🛡️ Gerador Guardião
 
-![Versão](https://img.shields.io/badge/versão-1.0.0-blue)
+![Versão](https://img.shields.io/badge/versão-2.0.0-blue)
 ![Licença](https://img.shields.io/badge/licença-MIT-green)
 ![Status](https://img.shields.io/badge/status-ativo-success)
 
-> Ferramenta online completa para geração de senhas seguras e outras utilidades web
+> Crie senhas fortes, encurte links, gere QR Codes e muito mais — tudo grátis e sem precisar de cadastro.
 
-## 📋 Sobre o Projeto
-
-O **Gerador Guardião** é uma plataforma web gratuita que oferece ferramentas essenciais para sua segurança digital, incluindo um poderoso gerador de senhas com customização completa e outras funcionalidades úteis.
-
-🔗 **[Acesse o site](https://geradorguardiao.com.br)**
-
-## ✨ Funcionalidades
-
-### 🔐 Gerador de Senhas
-- Geração de senhas fortes e personalizáveis
-- Controle de comprimento (8-32 caracteres)
-- Opções de inclusão:
-  - Letras maiúsculas
-  - Letras minúsculas
-  - Números
-  - Símbolos especiais
-- Indicador visual de força da senha
-- Histórico de senhas geradas
-- Cópia rápida para área de transferência
-- **Tema escuro/claro** com switch animado
-
-### 🛠️ Ferramentas Adicionais
-- **Encurtador de URL**: Transforme links longos em URLs curtas
-- **Gerador de Link WhatsApp**: Crie links diretos para conversas no WhatsApp
-- **Gerador de QR Code**: Converta textos e links em códigos QR
-
-### 📝 Blog de Segurança
-- Artigos sobre boas práticas de segurança digital
-- Guias sobre gerenciadores de senhas
-- Dicas de proteção online
-
-## 🚀 Tecnologias Utilizadas
-
-- **HTML5** - Estrutura semântica
-- **CSS3** - Estilização moderna com variáveis CSS
-- **JavaScript (Vanilla)** - Funcionalidades interativas
-- **Font Awesome** - Ícones
-- **Google Fonts** - Tipografia (Poppins & Roboto Mono)
-
-## 📁 Estrutura do Projeto
-
-```
-gerador/
-├── index.html              # Página principal
-├── css/
-│   ├── style.css          # Estilos principais
-│   ├── blog.css           # Estilos do blog
-│   ├── ferramentas.css    # Estilos das ferramentas
-│   └── link-bio.css       # Estilos do link bio
-├── js/
-│   ├── script.js          # Script principal do gerador
-│   ├── theme-switcher.js  # Alternador de temas
-│   ├── ferramentas.js     # Scripts das ferramentas
-│   └── link-bio-builder.js
-├── pages/
-│   ├── ferramentas.html
-│   ├── link-bio.html
-│   ├── politica-privacidade.html
-│   └── termos-uso.html
-├── artigos/
-│   └── ...                # Artigos do blog
-└── img/                   # Imagens e ícones
-```
-
-## 🎨 Recursos Visuais
-
-- **Design Responsivo**: Funciona perfeitamente em dispositivos móveis e desktop
-- **Tema Escuro/Claro**: Alternância suave entre modos de visualização
-- **Animações Suaves**: Transições e feedbacks visuais
-- **Interface Intuitiva**: UX otimizada para facilidade de uso
-
-## 🔒 Segurança e Privacidade
-
-- ✅ Senhas geradas **localmente no navegador**
-- ✅ Nenhum dado é enviado para servidores
-- ✅ Código-fonte aberto e auditável
-- ✅ Sem coleta de informações pessoais
-
-## 💻 Como Usar Localmente
-
-1. **Clone o repositório**
-```bash
-git clone https://github.com/eduallochio/gerador.git
-```
-
-2. **Navegue até o diretório**
-```bash
-cd gerador
-```
-
-3. **Abra o arquivo HTML**
-```bash
-# Windows
-start index.html
-
-# Linux/Mac
-open index.html
-```
-
-Ou simplesmente arraste o arquivo `index.html` para o navegador.
-
-## 🤝 Contribuindo
-
-Contribuições são sempre bem-vindas! Sinta-se à vontade para:
-
-1. Fazer um fork do projeto
-2. Criar uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abrir um Pull Request
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 📧 Contato
-
-Eduardo Allochio - [@eduallochio](https://github.com/eduallochio)
-
-Link do Projeto: [https://github.com/eduallochio/gerador](https://github.com/eduallochio/gerador)
+🔗 **[Acesse agora em geradorguardiao.com.br](https://geradorguardiao.com.br)**
 
 ---
 
-⭐ Se este projeto foi útil para você, considere dar uma estrela!
+## O que é o Gerador Guardião?
 
-**Desenvolvido com 💙 para sua segurança digital**
+O Gerador Guardião nasceu com uma missão simples: ajudar qualquer pessoa a se proteger melhor na internet, de forma gratuita e sem complicação.
+
+Hoje o site reúne um conjunto de ferramentas úteis para o dia a dia digital — desde criar uma senha difícil de hackear até montar uma página com todos os seus links para compartilhar nas redes sociais.
+
+Tudo funciona direto no navegador, sem instalar nada e sem criar conta.
+
+---
+
+## O que você encontra no site
+
+### 🔐 Gerador de Senhas Seguras
+A ferramenta principal. Crie senhas fortes em segundos, com total controle sobre o resultado:
+
+- Escolha o tamanho da senha (de 8 até 32 caracteres)
+- Inclua ou exclua letras maiúsculas, minúsculas, números e símbolos
+- Veja em tempo real se a senha é fraca, média, forte ou muito forte
+- Copie a senha com um clique
+- Sua senha **nunca sai do seu dispositivo** — ela é criada localmente, sem passar por nenhum servidor
+
+### 🔗 Link na Bio
+Monte sua própria página de links para usar na bio do Instagram, TikTok ou qualquer rede social. Adicione foto, nome, descrição e quantos links quiser. No final, você recebe um link curto pronto para colar no perfil.
+
+### ✂️ Encurtador de URL
+Transforme aqueles links gigantes em algo curto, limpo e fácil de compartilhar. Ideal para campanhas, redes sociais ou simplesmente para organizar seus links.
+
+### 📱 Gerador de QR Code
+Crie QR Codes personalizados a partir de qualquer texto ou link. Escolha as cores, o estilo dos pontos e até adicione seu logotipo. Baixe o resultado em PNG na hora.
+
+### 💬 Gerador de Link para WhatsApp
+Crie um link direto para uma conversa no WhatsApp, já com mensagem pré-preenchida. Útil para negócios, atendimento ao cliente ou qualquer situação em que você queira facilitar o contato.
+
+### 📚 Blog de Segurança Digital
+Artigos escritos de forma simples sobre como se proteger melhor na internet — senhas, gerenciadores, autenticação em dois fatores e muito mais.
+
+---
+
+## Por que usar o Gerador Guardião?
+
+- **Gratuito** — sem planos pagos, sem anúncios intrusivos
+- **Sem cadastro** — acesse e use na hora, sem criar conta
+- **Privado** — suas senhas são geradas no seu próprio navegador e não vão a lugar nenhum
+- **Rápido** — funciona em qualquer celular ou computador, sem instalar nada
+- **Visual moderno** — interface limpa com tema claro e escuro
+
+---
+
+## Visual do site
+
+O site usa um design no estilo **Claymorphism** inspirado no **Material Design** do Google — com cantos bem arredondados, sombras suaves e uma paleta de cores em tons de azul. Tem versão clara e escura, e funciona bem tanto no celular quanto no computador.
+
+---
+
+## Segurança e privacidade
+
+- As senhas são geradas usando a API de criptografia nativa do navegador
+- Nenhuma senha é armazenada ou enviada para servidores
+- O único dado enviado para fora é um contador anônimo de senhas geradas (apenas um número, sem nenhuma senha junto)
+- O site usa Google AdSense para se manter gratuito
+
+---
+
+## Contato
+
+Desenvolvido por **Eduardo Allochio**
+
+- GitHub: [@eduallochio](https://github.com/eduallochio)
+- Instagram: [@eduallochio](https://www.instagram.com/eduallochio/)
+- Site: [geradorguardiao.com.br](https://geradorguardiao.com.br)
+
+---
+
+⭐ Se o projeto foi útil pra você, deixa uma estrela no repositório!
+
+**Feito com 💙 para proteger sua vida digital**

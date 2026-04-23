@@ -1,147 +1,204 @@
-/* ============================================= */
-/* ===         ESTILOS DO BLOG               === */
-/* ============================================= */
+/* ================================================
+   BLOG / ARTIGOS — Claymorphism + Material You
+   ================================================ */
 
-/*
-  Documentação:
-  - Usamos a variável --widget-background para o fundo da página do artigo, criando uma diferenciação sutil do resto do site.
-  - A cor do texto principal (--text-color) é herdada para manter a consistência com o tema (claro/escuro).
-*/
 .content-section .article-content {
-  background-color: var(--widget-background);
-  padding: 3rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  border: 1px solid var(--border-color);
-}
-
-/*
-  Documentação:
-  - A fonte 'Merriweather' foi escolhida para o corpo do texto por sua excelente legibilidade em telas.
-  - O 'max-width' garante que as linhas não fiquem excessivamente longas, o que melhora muito a experiência de leitura.
-  - O 'text-align: left' é removido para que o estilo padrão seja aplicado, mas pode ser forçado se necessário.
-*/
-.article-content {
-  font-family: "Merriweather", serif;
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: left; /* Garante alinhamento à esquerda para leitura */
-}
-
-/*
-  Documentação:
-  - O título principal (H1) ganha mais destaque com um tamanho maior e uma margem inferior generosa.
-  - A fonte 'Poppins' é mantida para os títulos para criar um contraste visual interessante com o texto do corpo.
-*/
-.article-content h1 {
-  font-family: "Poppins", sans-serif;
-  font-size: 2.8rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  color: var(--text-color);
-}
-
-/*
-  Documentação:
-  - Os subtítulos (H2) recebem uma borda inferior para separá-los claramente das seções.
-  - O espaçamento é ajustado para criar um fluxo de leitura lógico.
-*/
-.article-content h2 {
-  font-family: "Poppins", sans-serif;
-  font-size: 1.8rem;
+  background: var(--clay-surface);
+  padding: 3rem 3.5rem;
+  border-radius: var(--r-xl);
+  box-shadow: var(--clay-shadow-md);
   margin-top: 2.5rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--border-color);
-  color: var(--text-color);
+  margin-bottom: 3rem;
+  border: 1.5px solid var(--clay-border);
+  animation: clayFadeUp 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 
-/*
-  Documentação:
-  - Aumentamos ligeiramente o tamanho da fonte e o espaçamento entre linhas (line-height) dos parágrafos para não cansar a vista.
-  - A cor do texto é suavizada para um cinza escuro, o que é mais confortável que o preto puro.
-*/
+.article-content {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* Typography */
+.article-content h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 0.9rem;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.article-content h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 900;
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--clay-border);
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.article-content h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-top: 1.8rem;
+  margin-bottom: 0.9rem;
+  color: var(--text-primary);
+}
+
 .article-content p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--light-text-color);
-  margin-bottom: 1.5rem;
+  font-size: 1.06rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1.4rem;
 }
 
-/*
-  Documentação:
-  - Os metadados do artigo (data de publicação) são estilizados para serem discretos, mas legíveis.
-*/
 .article-content .article-meta {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.9rem;
-  color: var(--light-text-color);
-  margin-bottom: 2rem;
-  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.87rem;
+  font-weight: 700;
+  color: var(--text-hint);
+  margin-bottom: 2.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/*
-  Documentação:
-  - Links ganham um sublinhado sutil e uma transição suave, tornando-os mais convidativos ao clique.
-  - A cor é herdada da variável --primary-color para consistência.
-*/
+.article-content .article-meta::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 3px;
+  background: var(--md-primary);
+  border-radius: 3px;
+}
+
+/* Links */
 .article-content a {
-  color: var(--primary-color);
+  color: var(--md-primary);
   text-decoration: none;
-  border-bottom: 2px solid rgba(67, 97, 238, 0.2);
+  font-weight: 700;
+  border-bottom: 2px solid rgba(0,137,123,0.2);
   transition: var(--transition);
 }
 
 .article-content a:hover {
-  background-color: rgba(67, 97, 238, 0.1);
-  border-bottom-color: var(--primary-color);
+  background: var(--md-primary-container);
+  border-bottom-color: var(--md-primary);
+  border-radius: 4px;
+  padding: 0 3px;
 }
 
-/*
-  Documentação:
-  - Listas são ajustadas com mais espaçamento para não parecerem apertadas.
-  - O espaçamento interno (padding-left) cria uma indentação clara.
-*/
+/* Lists */
 .article-content ul,
 .article-content ol {
-  padding-left: 2rem;
+  padding-left: 1.8rem;
   margin-bottom: 1.5rem;
-  color: var(--light-text-color);
+  color: var(--text-secondary);
 }
 
 .article-content li {
-  margin-bottom: 0.8rem;
-  line-height: 1.7;
+  margin-bottom: 0.75rem;
+  line-height: 1.75;
+  font-size: 1.02rem;
 }
 
-/*
-  Documentação:
-  - A citação (blockquote) recebe um grande destaque visual com uma barra lateral, fundo e estilo de fonte itálico.
-  - Isso ajuda a quebrar o texto e a chamar atenção para trechos importantes.
-*/
+.article-content li strong {
+  color: var(--text-primary);
+}
+
+/* Blockquote */
 .article-content blockquote {
-  margin: 2.5rem 0;
-  padding: 1.5rem 2rem;
-  border-left: 5px solid var(--primary-color);
-  background-color: var(--background-color);
+  margin: 2.4rem 0;
+  padding: 1.4rem 1.8rem;
+  border-left: 5px solid var(--md-primary);
+  background: var(--md-primary-container);
   font-style: italic;
-  font-size: 1.2rem;
-  color: var(--text-color);
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  box-shadow: var(--clay-shadow-sm);
 }
 
 .article-content blockquote p {
   margin-bottom: 0;
+  color: var(--text-primary);
 }
 
-/* Estilo para imagens dentro do artigo */
+/* Images */
 .article-content img {
   max-width: 100%;
   height: auto;
-  border-radius: var(--border-radius);
+  border-radius: var(--r-lg);
   margin: 2rem 0;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--clay-shadow-md);
+  border: 1.5px solid var(--clay-border);
+}
+
+/* ── Article Layout com Sidebar ── */
+.article-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2.5rem;
+  align-items: flex-start;
+  margin-top: 0;
+}
+
+.article-sidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar-ad-sticky {
+  background: var(--clay-surface);
+  border: 1.5px solid var(--clay-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--clay-shadow-sm);
+  min-height: 600px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .article-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .article-sidebar {
+    position: static;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sidebar-ad-sticky {
+    width: 100%;
+    max-width: 336px;
+    min-height: 280px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-section .article-content {
+    padding: 2rem 1.5rem;
+    border-radius: var(--r-lg);
+    margin-top: 1.5rem;
+  }
+
+  .article-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .article-content h2 {
+    font-size: 1.3rem;
+  }
 }

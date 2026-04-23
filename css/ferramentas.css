@@ -1,266 +1,338 @@
+/* ================================================
+   FERRAMENTAS — Claymorphism + Material You
+   ================================================ */
+
 .tools-section {
-    padding: 4rem 0;
+  padding: 3rem 0 4rem;
 }
 
+/* Promo Widget */
+.tool-widget-promo {
+  background: linear-gradient(135deg, var(--md-primary-container) 0%, rgba(0,137,123,0.08) 100%);
+  padding: 2.4rem 2.8rem;
+  border-radius: var(--r-xl);
+  box-shadow: var(--clay-shadow-md);
+  border: 2px solid rgba(67,97,238,0.25);
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-widget-promo::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(0,137,123,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.tool-widget-promo h2 {
+  margin-bottom: 0.9rem;
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: var(--md-primary);
+  letter-spacing: -0.3px;
+}
+
+.tool-widget-promo h2 i {
+  color: var(--md-primary);
+  margin-right: 0.5rem;
+}
+
+.tool-widget-promo p {
+  max-width: 580px;
+  margin: 0 auto 1.6rem;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.promo-button {
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* Tool Widget */
 .tool-widget {
-    background-color: var(--widget-background);
-    padding: 2.5rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    border: 1px solid var(--border-color);
-    margin-bottom: 2rem;
+  background: var(--clay-surface);
+  padding: 2.4rem 2.6rem;
+  border-radius: var(--r-xl);
+  box-shadow: var(--clay-shadow-md);
+  border: 1.5px solid var(--clay-border);
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.tool-widget::before {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: -50px;
+  width: 150px; height: 150px;
+  background: radial-gradient(circle, rgba(0,137,123,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .tool-widget h2 {
-    font-size: 1.8rem;
-    color: var(--text-color);
-    font-weight: 700;
-    margin-bottom: 2rem;
-    text-align: center;
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  font-weight: 900;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.3px;
 }
 
-/* Header com ícone e badge opcional */
 .tool-widget h2 i {
-    color: var(--primary-color);
-    margin-right: 0.5rem;
+  color: var(--md-primary);
+  margin-right: 0.5rem;
 }
 
+.tools-section .tool-widget + .tool-widget {
+  margin-top: 0;
+}
+
+/* Form Groups */
 .form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
+  margin-bottom: 1.4rem;
+  text-align: left;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--text-color);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
 }
 
 .form-group input,
 .form-group textarea {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    transition: var(--transition);
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border: 2px solid var(--clay-border);
+  border-radius: var(--r-md);
+  background: var(--clay-surface-2);
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 500;
+  transition: var(--transition);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 3px rgba(0,137,123,0.15);
+  background: var(--clay-surface);
 }
 
-.tool-button {
-    width: 100%;
-    padding: 1rem;
-    background: var(--gradient-primary);
-    color: #fff;
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
 }
 
-.tool-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-}
-
-/* Botões secundários e estados desabilitados */
-.tool-button.secondary {
-    background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-}
-.tool-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.result-box {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background-color: var(--background-color);
-    border: 1px dashed var(--border-color);
-    border-radius: var(--border-radius);
-    word-wrap: break-word;
-    text-align: center;
-}
-
-#qrcode {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-}
-
-/* Estilos para as Opções de QR Code */
-.qr-options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-/* Cartões de opção com leve destaque ao foco */
-.qr-options-grid .form-group {
-    padding: 0.5rem;
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-}
-.qr-options-grid .form-group:focus-within {
-    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15);
-}
-
-.form-group input[type="color"] {
-    width: 100%;
-    height: 40px;
-    padding: 0.2rem;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    cursor: pointer;
-}
-
-/* Estilos para a Seção de Download */
-.download-section {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.download-btn {
-    background: var(--success-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-}
-
-.download-btn:hover {
-    background: #3ac0e0; /* Um pouco mais escuro que --success-color */
-    box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
-}
-
-/* Layout de duas colunas para ferramentas longas (quando aplicável) */
-.tools-two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-/* Ajuste no Canvas do QR Code */
-#qrcode canvas {
-    border-radius: var(--border-radius);
-}
-
-/* Estilos para o menu de seleção */
+/* Select */
 .form-control {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 16px 12px;
+  width: 100%;
+  padding: 0.85rem 2.5rem 0.85rem 1.1rem;
+  border: 2px solid var(--clay-border);
+  border-radius: var(--r-md);
+  background-color: var(--clay-surface-2);
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 500;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2300897B' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 16px 12px;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
 .form-control:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 3px rgba(0,137,123,0.15);
 }
 
-/* Estilos para os controles de logo */
+/* Buttons */
+.tool-button {
+  width: 100%;
+  padding: 1rem 1.4rem;
+  background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-md);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: var(--transition-spring);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  box-shadow: 5px 5px 0px rgba(58,12,163,0.3), 0 6px 20px rgba(67,97,238,0.2);
+}
+
+.tool-button:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 7px 7px 0px rgba(58,12,163,0.35), 0 10px 28px rgba(67,97,238,0.25);
+}
+
+.tool-button:active {
+  transform: translateY(1px);
+  box-shadow: 3px 3px 0px rgba(58,12,163,0.25);
+}
+
+.tool-button.secondary {
+  background: transparent;
+  color: var(--md-primary);
+  border: 2px solid var(--md-primary);
+  box-shadow: none;
+}
+
+.tool-button.secondary:hover {
+  background: var(--md-primary-container);
+  box-shadow: none;
+}
+
+.tool-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Result Box */
+.result-box {
+  margin-top: 1.4rem;
+  padding: 1.2rem 1.4rem;
+  background: var(--clay-surface-2);
+  border: 2px dashed var(--clay-border);
+  border-radius: var(--r-md);
+  word-wrap: break-word;
+  text-align: center;
+  transition: var(--transition);
+}
+
+#qrcode {
+  display: flex;
+  justify-content: center;
+  padding: 1.2rem;
+}
+
+#qrcode canvas {
+  border-radius: var(--r-md);
+  box-shadow: var(--clay-shadow-sm);
+}
+
+/* QR Options Grid */
+.qr-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.qr-options-grid .form-group {
+  padding: 0.4rem;
+  border-radius: var(--r-md);
+  transition: var(--transition);
+}
+
+.qr-options-grid .form-group:focus-within {
+  box-shadow: 0 0 0 3px rgba(0,137,123,0.12);
+}
+
+.form-group input[type="color"] {
+  width: 100%;
+  height: 44px;
+  padding: 0.25rem;
+  border-radius: var(--r-md);
+  border: 2px solid var(--clay-border);
+  cursor: pointer;
+  background: var(--clay-surface);
+}
+
+/* Download Section */
+.download-section {
+  margin-top: 1.8rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid var(--clay-border);
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #4cc9f0 0%, #4361ee 100%);
+  box-shadow: 5px 5px 0px rgba(58,12,163,0.25);
+}
+
+.download-btn:hover {
+  box-shadow: 7px 7px 0px rgba(58,12,163,0.3), 0 8px 20px rgba(67,97,238,0.2);
+}
+
+/* Logo Controls */
 .logo-controls {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 8px;
 }
 
 .logo-btn {
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
-    flex-grow: 1;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.88rem;
+  flex-grow: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .remove-btn {
-    background: #f72585; /* Cor de perigo/remoção */
+  background: linear-gradient(135deg, #EF5350, #C62828);
+  box-shadow: 4px 4px 0px rgba(180,0,0,0.2);
 }
+
 .remove-btn:hover {
-    background: #d41d70;
+  box-shadow: 6px 6px 0px rgba(180,0,0,0.25);
 }
 
-/* =================================== */
-/* === Responsividade Ferramentas === */
-/* =================================== */
+/* Two-col layout */
+.tools-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
 
+/* Responsive */
 @media (max-width: 768px) {
-    .qr-options-grid {
-        grid-template-columns: 1fr; /* Muda para uma única coluna */
-        gap: 1.2rem; /* Ajusta o espaçamento para a visualização vertical */
-    }
+  .tool-widget {
+    padding: 1.6rem 1.4rem;
+    border-radius: var(--r-lg);
+  }
 
-    .tools-two-col {
-        grid-template-columns: 1fr;
-    }
+  .qr-options-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 
-    .form-group {
-        /* Garante que o texto dos labels não fique quebrado de forma estranha */
-        text-align: left; 
-    }
-}
+  .tools-two-col {
+    grid-template-columns: 1fr;
+  }
 
-.tool-widget-promo {
-    background-color: var(--widget-background);
-    padding: 2.5rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    border: 1px solid var(--primary-color);
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
-.tool-widget-promo h2 {
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
-    color: var(--primary-color);
-}
-
-.tool-widget-promo p {
-    max-width: 600px;
-    margin: 0 auto 1.5rem auto;
-    color: var(--light-text-color);
-    font-size: 1.1rem;
-}
-
-.promo-button {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-/* Espaçamento extra entre widgets para respirabilidade */
-.tools-section .tool-widget + .tool-widget {
-    margin-top: 2rem;
+  .tool-widget-promo {
+    padding: 1.8rem 1.4rem;
+    border-radius: var(--r-lg);
+  }
 }
