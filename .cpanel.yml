@@ -2,4 +2,15 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home4/edua2931/public_html/geradorguardiao.com.br/
-    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R artigos $DEPLOYPATH
+    - /bin/cp -R css $DEPLOYPATH
+    - /bin/cp -R img $DEPLOYPATH
+    - /bin/cp -R js $DEPLOYPATH
+    - /bin/cp -R pages $DEPLOYPATH
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp contador.php $DEPLOYPATH
+    - /bin/cp manifest.json $DEPLOYPATH
+    - /bin/cp robots.txt $DEPLOYPATH
+    - /bin/cp sitemap.xml $DEPLOYPATH
+    - /bin/cp sw.js $DEPLOYPATH
+    - /bin/cp offline.html $DEPLOYPATH
