@@ -1,16 +1,5 @@
-// --- Supabase (contador global anônimo — apenas números, zero senhas armazenadas) ---
-const _SB_URL = 'https://ozijuhsgcujnqhhpfise.supabase.co';
-const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96aWp1aHNnY3VqbnFoaHBmaXNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NTMwNjgsImV4cCI6MjA2OTAyOTA2OH0.b9IKmeWAZnuHbVhEqL5BEw2d1n2EYxC9nnhzYwmWm9I';
-let _db = null;
-
-function initSupabase() {
-    try {
-        if (typeof window.supabase === 'undefined') return;
-        _db = window.supabase.createClient(_SB_URL, _SB_KEY, {
-            auth: { persistSession: false, autoRefreshToken: false }
-        });
-    } catch (e) { /* silent */ }
-}
+// --- Contador via PHP local (zero senhas armazenadas — apenas números) ---
+const _CONTADOR_URL = '/contador.php';
 
 // Função para mostrar notificações
 function showToast(message, isError = false) {
@@ -163,45 +152,28 @@ function _getLocalStats() {
     return s;
 }
 
-// Carrega contagens: exibe local imediatamente, depois sincroniza com o global
+// Carrega contagens: exibe local imediatamente, depois sincroniza com o servidor PHP
 function getPasswordStats(elements) {
     const local = _getLocalStats();
     updateCounterDisplays(local, elements);
 
-    if (!_db) return;
-    _db.from('password_stats').select('total_count, today_count, last_updated').limit(1).single()
-        .then(({ data }) => {
-            if (!data) return;
-            const today = new Date().toDateString();
-            const serverDate = new Date(data.last_updated).toDateString();
-            updateCounterDisplays({
-                total: data.total_count,
-                today: serverDate === today ? data.today_count : 0
-            }, elements);
+    fetch(_CONTADOR_URL + '?acao=ler')
+        .then(r => r.json())
+        .then(data => {
+            updateCounterDisplays({ total: data.total, today: data.hoje }, elements);
         })
-        .catch(() => { /* sem internet ou Supabase indisponível — continua com local */ });
+        .catch(() => { /* sem internet — continua com local */ });
 }
 
-// Incrementa local imediatamente (UI responsiva) e global em background (fire-and-forget)
+// Incrementa local imediatamente (UI responsiva) e servidor em background
 function incrementCounters(elements) {
-    const today = new Date().toDateString();
     const local = _getLocalStats();
     local.today++;
     local.total++;
     localStorage.setItem('passwordStats', JSON.stringify(local));
     updateCounterDisplays(local, elements);
 
-    if (!_db) return;
-    _db.from('password_stats').select('id, total_count, today_count, last_updated').limit(1).single()
-        .then(({ data }) => {
-            if (!data) return;
-            const serverDate = new Date(data.last_updated).toDateString();
-            return _db.from('password_stats').update({
-                total_count: data.total_count + 1,
-                today_count: serverDate === today ? data.today_count + 1 : 1,
-                last_updated: new Date().toISOString()
-            }).eq('id', data.id);
-        })
+    fetch(_CONTADOR_URL + '?acao=incrementar')
         .catch(() => { /* silent — local já foi atualizado */ });
 }
 
@@ -469,7 +441,6 @@ if (document.readyState === 'loading') {
 
 function initApp() {
     try {
-        initSupabase(); // não-bloqueante — falha silenciosamente se indisponível
         initializeApp();
     } catch (error) {
         console.error('Erro crítico na inicialização:', error);
